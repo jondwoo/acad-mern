@@ -3,7 +3,7 @@ import {
   BrowserRouter as Router,
   Route,
   Redirect,
-  Switch
+  Switch,
 } from 'react-router-dom';
 
 import Users from './user/pages/Users';
@@ -18,7 +18,7 @@ const App = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [userId, setUserId] = useState(false);
 
-  const login = useCallback(uid => {
+  const login = useCallback((uid) => {
     setIsLoggedIn(true);
     setUserId(uid);
   }, []);
@@ -71,7 +71,7 @@ const App = () => {
         isLoggedIn: isLoggedIn,
         userId: userId,
         login: login,
-        logout: logout
+        logout: logout,
       }}
     >
       <Router>
