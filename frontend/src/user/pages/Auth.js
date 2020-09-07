@@ -5,17 +5,17 @@ import Input from '../../shared/components/FormElements/Input';
 import Button from '../../shared/components/FormElements/Button';
 import ErrorModal from '../../shared/components/UIElements/ErrorModal';
 import LoadingSpinner from '../../shared/components/UIElements/LoadingSpinner';
-import { useForm } from '../../shared/hooks/form-hook';
 import {
   VALIDATOR_EMAIL,
   VALIDATOR_MINLENGTH,
-  VALIDATOR_REQUIRE,
+  VALIDATOR_REQUIRE
 } from '../../shared/util/validators';
+import { useForm } from '../../shared/hooks/form-hook';
 import { useHttpClient } from '../../shared/hooks/http-hook';
 import { AuthContext } from '../../shared/context/auth-context';
 import './Auth.css';
 
-const Auth = (props) => {
+const Auth = () => {
   const auth = useContext(AuthContext);
   const [isLoginMode, setIsLoginMode] = useState(true);
   const { isLoading, error, sendRequest, clearError } = useHttpClient();
@@ -24,14 +24,14 @@ const Auth = (props) => {
     {
       email: {
         value: '',
-        isValid: false,
+        isValid: false
       },
       password: {
         value: '',
-        isValid: false,
-      },
+        isValid: false
+      }
     },
-    false,
+    false
   );
 
   const switchModeHandler = () => {
@@ -39,9 +39,9 @@ const Auth = (props) => {
       setFormData(
         {
           ...formState.inputs,
-          name: undefined,
+          name: undefined
         },
-        formState.inputs.email.isValid && formState.inputs.password.isValid,
+        formState.inputs.email.isValid && formState.inputs.password.isValid
       );
     } else {
       setFormData(
@@ -49,16 +49,16 @@ const Auth = (props) => {
           ...formState.inputs,
           name: {
             value: '',
-            isValid: false,
-          },
+            isValid: false
+          }
         },
-        false,
+        false
       );
     }
-    setIsLoginMode((prevMode) => !prevMode);
+    setIsLoginMode(prevMode => !prevMode);
   };
 
-  const authSubmitHandler = async (event) => {
+  const authSubmitHandler = async event => {
     event.preventDefault();
 
     if (isLoginMode) {
@@ -68,29 +68,27 @@ const Auth = (props) => {
           'POST',
           JSON.stringify({
             email: formState.inputs.email.value,
-            password: formState.inputs.password.value,
+            password: formState.inputs.password.value
           }),
           {
-            'Content-Type': 'application/json',
-          },
+            'Content-Type': 'application/json'
+          }
         );
-
         auth.login(responseData.user.id);
       } catch (err) {}
     } else {
       try {
-        const responseData =  await fetch(
+        const responseData = await sendRequest(
           'http://localhost:5000/api/users/signup',
           'POST',
           JSON.stringify({
             name: formState.inputs.name.value,
             email: formState.inputs.email.value,
-            password: formState.inputs.password.value,
+            password: formState.inputs.password.value
           }),
-
           {
-            'Content-Type': 'application/json',
-          },
+            'Content-Type': 'application/json'
+          }
         );
 
         auth.login(responseData.user.id);
@@ -113,7 +111,7 @@ const Auth = (props) => {
               type="text"
               label="Your Name"
               validators={[VALIDATOR_REQUIRE()]}
-              errorText="Please enter a name"
+              errorText="Please enter a name."
               onInput={inputHandler}
             />
           )}
@@ -121,9 +119,9 @@ const Auth = (props) => {
             element="input"
             id="email"
             type="email"
-            label="E-mail"
+            label="E-Mail"
             validators={[VALIDATOR_EMAIL()]}
-            errorText="Please enter a valid email address"
+            errorText="Please enter a valid email address."
             onInput={inputHandler}
           />
           <Input
@@ -132,16 +130,15 @@ const Auth = (props) => {
             type="password"
             label="Password"
             validators={[VALIDATOR_MINLENGTH(6)]}
-            errorText="Please enter a valid password (at least 6 characters)"
+            errorText="Please enter a valid password, at least 6 characters."
             onInput={inputHandler}
           />
-          <Button type="Submit" disabled={!formState.isValid}>
+          <Button type="submit" disabled={!formState.isValid}>
             {isLoginMode ? 'LOGIN' : 'SIGNUP'}
           </Button>
         </form>
         <Button inverse onClick={switchModeHandler}>
-          SWITCH TO
-          {isLoginMode ? 'SIGNUP' : 'LOGIN'}
+          SWITCH TO {isLoginMode ? 'SIGNUP' : 'LOGIN'}
         </Button>
       </Card>
     </React.Fragment>

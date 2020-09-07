@@ -8,7 +8,6 @@ import { useHttpClient } from '../../shared/hooks/http-hook';
 
 const UserPlaces = () => {
   const [loadedPlaces, setLoadedPlaces] = useState();
-
   const { isLoading, error, sendRequest, clearError } = useHttpClient();
 
   const userId = useParams().userId;
@@ -17,7 +16,7 @@ const UserPlaces = () => {
     const fetchPlaces = async () => {
       try {
         const responseData = await sendRequest(
-          `http://localhost:5000/api/places/user/${userId}`,
+          `http://localhost:5000/api/places/user/${userId}`
         );
         setLoadedPlaces(responseData.places);
       } catch (err) {}
@@ -25,9 +24,9 @@ const UserPlaces = () => {
     fetchPlaces();
   }, [sendRequest, userId]);
 
-  const placeDeletedHandler = (deletePlaceId) => {
-    setLoadedPlaces((prevPlaces) =>
-      prevPlaces.filter((place) => place.id !== deletePlaceId),
+  const placeDeletedHandler = deletedPlaceId => {
+    setLoadedPlaces(prevPlaces =>
+      prevPlaces.filter(place => place.id !== deletedPlaceId)
     );
   };
 
@@ -42,7 +41,6 @@ const UserPlaces = () => {
       {!isLoading && loadedPlaces && (
         <PlaceList items={loadedPlaces} onDeletePlace={placeDeletedHandler} />
       )}
-      ;
     </React.Fragment>
   );
 };

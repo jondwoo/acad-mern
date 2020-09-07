@@ -7,7 +7,7 @@ import ErrorModal from '../../shared/components/UIElements/ErrorModal';
 import LoadingSpinner from '../../shared/components/UIElements/LoadingSpinner';
 import {
   VALIDATOR_REQUIRE,
-  VALIDATOR_MINLENGTH,
+  VALIDATOR_MINLENGTH
 } from '../../shared/util/validators';
 import { useForm } from '../../shared/hooks/form-hook';
 import { useHttpClient } from '../../shared/hooks/http-hook';
@@ -21,22 +21,23 @@ const NewPlace = () => {
     {
       title: {
         value: '',
-        isValid: false,
+        isValid: false
       },
       description: {
         value: '',
-        isValid: false,
+        isValid: false
       },
       address: {
         value: '',
-        isValid: false,
-      },
+        isValid: false
+      }
     },
-    false,
+    false
   );
 
   const history = useHistory();
-  const placeSubmitHandler = async (event) => {
+
+  const placeSubmitHandler = async event => {
     event.preventDefault();
     try {
       await sendRequest(
@@ -46,11 +47,9 @@ const NewPlace = () => {
           title: formState.inputs.title.value,
           description: formState.inputs.description.value,
           address: formState.inputs.address.value,
-          creator: auth.userId,
+          creator: auth.userId
         }),
-        {
-          'Content-Type': 'application/json',
-        },
+        { 'Content-Type': 'application/json' }
       );
       history.push('/');
     } catch (err) {}
