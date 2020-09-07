@@ -37,9 +37,7 @@ app.use((error, req, res, next) => {
 });
 
 mongoose
-  .connect(
-    'mongodb+srv://jondwoo:adsl1101@cluster0.fmo1o.gcp.mongodb.net/mern?retryWrites=true&w=majority',
-  )
+  .connect(process.env.DB_URL)
   .then(() => {
     app.listen(5000);
   })
