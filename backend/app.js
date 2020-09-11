@@ -1,4 +1,3 @@
-require("dotenv").config();
 const fs = require("fs");
 const path = require("path");
 
@@ -56,4 +55,3 @@ mongoose
   .catch((err) => {
     console.log(err);
   });
-
